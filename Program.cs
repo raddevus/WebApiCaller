@@ -7,14 +7,26 @@ class Program
 {
     static async Task Main(string[] args)
     {
+        if (args.Length <= 0){
+            Console.WriteLine("Currently only works with two URLS: \n 1) http://localhost:5260/api/Edi/process \n 2) http://localhost:5260/api/Edi/parseisa");
+            Console.WriteLine("Usage: WebApiCaller [edi-filepath] [url]");
+            Console.WriteLine("Provide valid params & try again.");
+            return;
+        }
         // args[0] is the edi file name
         Console.WriteLine($"Posting data from {args[0]} to EdiParseApi...");
         string ediFileData = string.Join('\n',File.ReadAllLines(args[0]));
+        var targetUrl = String.Empty;
+        if (args.Length == 2){
+            targetUrl = args[1];
+        }else{
+            targetUrl = "http://localhost:5260/api/Edi/process";
+        }
 
         try
         {
             // Call the API asynchronously
-            string result = await CallApiAsync(args[0], ediFileData);
+            string result = await CallApiAsync(targetUrl, args[0], ediFileData);
             Console.WriteLine($"Response from API: {result}");
         }
         catch (Exception ex)
@@ -23,17 +35,17 @@ class Program
         }
     }
 
-    static async Task<string> CallApiAsync(string firstString, string secondString)
+    static async Task<string> CallApiAsync(string userUrl, string filePath, string fileData)
     {
         using (HttpClient client = new HttpClient())
         {
-            string apiUrl = "http://localhost:5260/api/Edi/process"; // Replace with your API endpoint URL
+            string apiUrl = userUrl;
 
             // Prepare the form-data content
             var formData = new MultipartFormDataContent
             {
-                { new StringContent(firstString), "filename" },
-                { new StringContent(secondString), "ediContent" }
+                { new StringContent(filePath), "filename" },
+                { new StringContent(fileData), "ediContent" }
             };
 
             // Send POST request
