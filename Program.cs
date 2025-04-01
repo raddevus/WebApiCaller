@@ -15,7 +15,11 @@ class Program
         }
         // args[0] is the edi file name
         Console.WriteLine($"Posting data from {args[0]} to EdiParseApi...");
-        string ediFileData = string.Join('\n',File.ReadAllLines(args[0]));
+        var allLines = File.ReadAllLines(args[0]);
+        if (allLines[0].Length > 106){
+            allLines[0] = allLines[0].Insert(105,Environment.NewLine);
+        }
+        string ediFileData = string.Join('\n',allLines);
         var targetUrl = String.Empty;
         if (args.Length == 2){
             targetUrl = args[1];
