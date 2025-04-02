@@ -36,6 +36,7 @@ class Program
         catch (Exception ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
+            File.AppendAllText("ErrorsDuringRun.log", $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}|{args[0]}|{ex.Message}");
         }
     }
 
