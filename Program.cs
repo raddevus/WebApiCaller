@@ -32,6 +32,10 @@ class Program
             // Call the API asynchronously
             string result = await CallApiAsync(targetUrl, args[0], ediFileData);
             Console.WriteLine($"Response from API: {result}");
+            if (result.ToUpper().Contains("INVALID")){
+                File.AppendAllText("ErrorsDuringRun.log", $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}|{args[0]}|{result}");
+            }
+            
         }
         catch (Exception ex)
         {
