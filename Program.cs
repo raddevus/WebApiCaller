@@ -33,14 +33,14 @@ class Program
             string result = await CallApiAsync(targetUrl, args[0], ediFileData);
             Console.WriteLine($"Response from API: {result}");
             if (result.ToUpper().Contains("INVALID")){
-                File.AppendAllText("ErrorsDuringRun.log", $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}|{args[0]}|{result}|{allLines[0]}{Environment.NewLine}");
+                File.AppendAllText("ErrorsDuringRun.log", $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}✅{args[0]}✅{result}✅{allLines[0]}{Environment.NewLine}");
             }
             
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
-            File.AppendAllText("ErrorsDuringRun.log", $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}|{args[0]}|{ex.Message}{Environment.NewLine}");
+            File.AppendAllText("ErrorsDuringRun.log", $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}✅{args[0]}✅{ex.Message}{Environment.NewLine}");
         }
     }
 
